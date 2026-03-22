@@ -1,0 +1,28 @@
+# back_end/.htaccess
+
+# Увімкнути переписування URL
+RewriteEngine On
+
+# Базова директорія - якщо проект в корені віртуального хоста
+# RewriteBase /
+
+# Якщо проект в піддиректорії, розкоментуйте та змініть:
+# RewriteBase /back_end/
+
+# Перенаправляти всі запити на index.php, крім:
+# - Реальних файлів (css, js, images тощо)
+# - Реальних директорій
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Заборонити доступ до конфіденційних директорій
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|env)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Налаштування для PHP (опціонально)
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
