@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 abstract class Model
@@ -55,11 +56,20 @@ abstract class Model
     public function where($conditions, $params = [])
     {
         $where = [];
+        $values = [];
+        
         foreach ($conditions as $column => $value) {
             $where[] = "$column = ?";
+            $values[] = $value;
         }
+        
         $where = implode(' AND ', $where);
         $sql = "SELECT * FROM {$this->table} WHERE $where";
-        return $this->db->fetchAll($sql, $params);
+        return $this->db->fetchAll($sql, $values);
+    }
+    
+    public function execute($sql, $params = [])
+    {
+        return $this->db->query($sql, $params);
     }
 }
